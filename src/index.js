@@ -1,12 +1,8 @@
-import ai from "./ai/gemini.js";
+import { askGemini } from "./ai/gemini.js";
 
 async function main() {
-    const response = await ai.models.generateContent({
-         model: "gemini-2.5-flash",
-    contents: "Say hello to Ajmain in one sentence.",
-    })
-
-    console.log(response.text)
+   const reply = await askGemini("Say Hello to Ajmain in one sentence.");
+   console.log(reply);
 }
 
 main();
