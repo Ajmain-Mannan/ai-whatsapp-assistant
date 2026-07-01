@@ -7,18 +7,31 @@ async function main() {
     input,
     output,
   });
+  const history = [];
 
   while (true) {
     const prompt = await rl.question("You: ");
 
     if (prompt.toLowerCase() === "exit") {
       console.log("Goodbye!");
+      rl.close();
       break;
     }
 
-    const reply = await askGemini(prompt);
+    if (prompt.trim() === "") {
+      continue;
+    }
 
-    console.log(`\nGemini: ${reply}\n`);
+    history.push(`You: ${prompt}`);
+    console.log(history.join("\n"));
+
+    try {
+      const reply = await askGemini(history.join("\n"));
+      history.push(`Gemini: ${reply}`);
+      console.log(`\nGemini: ${reply}\n`);
+    } catch (error) {
+      console.error("Failed to contact Gemini:", error.message);
+    }
   }
 }
 
